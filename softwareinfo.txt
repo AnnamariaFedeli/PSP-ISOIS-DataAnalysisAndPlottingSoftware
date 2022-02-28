@@ -1,0 +1,527 @@
+SOFTWARE INFO:
+
+GETTING STARTED:
+This sotfware has been designed for analysing Parker Solar Probes's data from the PSP database: https://spp-isois.sr.unh.edu/data_public/.
+The PSP database is divided into three main folders EPI-Hi, EPI-Lo, ISOIS
+    EPI-Hi: data separated into LET1, LET2 and HET, rate: 10s, 60s, 300s, 3600s and one second rate
+			To analyse proton and/or electron data use 10s, 60s or 3600s data.
+			300s data only contains heavy ion data.
+    EPI-Lo: data separated into pe (particle energy) and ic (ion composition), the resolution varies and 
+	cannot be chosen separately.
+    ISOIS: contains a summary of the data.
+	
+
+!!! Most of the functions work only for EPI-Hi data, since that is this software's main focus !!!
+
+The software consists of functions that retrieve, analyse and plot PSP data.
+The functions have been listed below along with the necessary inputs and/or needed steps in order to use them.
+
+Some of the functions require the data to be downloaded beforehand from the database and be opened in a notebook or cmd.
+The data can easily be retrieved from the database with the retreive_data function. 
+Detailed instruction are written as function documentation.
+
+The data does not need to be downloaded separately for the mulipanel function.
+
+Some of the functions in the software are meant to be used primarily inside other functions. 
+These functions can be used separately, but it will require a few extra steps than just retrieving the data.
+
+
+FUNCTIONS:
+def info_software(path_to_software_infotxt):
+    '''
+    path_to_software_infotxt: 
+    Path exemple: 'C:/Users/Desktop/folder'
+    Use r before the quotation marks if using the back slash in the path name. 
+    This cancels out any special python characters.
+    Or use  / as in the example instead.
+    '''
+ 
+ 
+ 
+def retrieve_data(path_to_folder, date, instrument, data = '', rate = ''):
+    
+    '''
+    This function retrieves the data from the PSP database for a chosen date, instrument and resolution (rate).
+    The database has 3 main folders EPI-Hi, EPI-Lo, ISOIS
+    EPI-Hi: data separated in LET1, LET2 and HET, rate: 10s, 60s, 300s, 3600s and one second rate
+    EPI-Lo: data separated in pe (particle energy) and ic (ion composition), resolution varies and cannot be chosen separately
+    ISOIS: contains a summary of the data
+    
+    To retrieve the data from the database, you need to input five variables in the following order:
+     
+    1. path_to_folder: Choose a folder in your computer where you want to save the data.
+    The data will be automatically saved in the chosen folder as a cdf file. 
+    The files will be named with the exact name they have in the database.
+    Path exemple: 'C:/Users/Desktop/folder'
+    Use r before the quotation marks if using the back slash in the path name. 
+    This cancels out any special python characters.
+    Or use  / as in the example instead.
+    
+    2. date: Input the date as a string in the form: 'YYYYMMDD'
+    
+    3. instrument: For the instrument, input (as a string) either 'epihi', 'epilo' or 'isois' 
+    
+    4. data: input (as a string):
+    for EPI-Hi: 'let1', 'let2' or 'het' (if you wish to retreive 1s data no input needed)
+    for EPI-Lo: 'ic' or 'pe'
+    for ISOIS: no input needed
+    
+    5. rate (resolution): 
+    for EPI-Hi: 'rates10', 'rates60', 'rates300', 'rates3600' or just 'rates' for 1s 
+    for EPI-Lo: no input needed
+    for ISOIS: no input needed'
+    
+
+    '''
+
+
+def get_zvariables(name_of_cdf):
+    '''
+    This function outputs all the zVariables in the opened cdf along with some basic information.
+    For more metadata use the get_info function.
+    
+    Input: name_of_cdf 
+    name_of_cdf = the name given to the cdf when opened in a notebook (or cmd line)
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+
+    '''
+
+
+
+def get_info(name_of_cdf, variable = 'all'):
+    '''
+    This function outputs the info for a chosen variable.
+    
+    Input variables:
+    1. name_of_cdf = the name given to the cdf when opened in a notebook
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    2. variable: If you wish to retrieve the information for all the variables, no second input needed.
+    Otherwise, input the name of the variable you are intrested in getting the information about.
+
+    To check the variable names use the get_zvariables function.
+    '''
+
+
+def get_data(name_of_cdf, variable = 'all'):
+    
+    '''
+    This function outputs the data for a chosen variable.
+    
+    Input variables:
+    1. name_of_cdf = the name given to the cdf when opened in a notebook
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    2. If you wish to retrieve the data for all the variables, no second input needed.
+    Otherwise, input the name of the variable you are intrested in getting the data of.
+
+    To check the variable names use the get_zvariables function.
+    '''
+
+
+def energy_channels(name_of_cdf):
+    '''
+    
+    This function prints out the energy channels for each particle in the cdf file.
+    
+    !!! Currently works only for EPI-Hi data !!!
+    
+    Input variable:
+    cdf_name = the name given to the cdf when opened in a notebook
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    
+    
+    '''
+    
+ def average_data(cdf_name, variable, wanted_resolution, data_resolution , particle= ''):
+    '''
+    This function creates an averaged dataframe for a chosen variable.
+    This function works for all data (Flux, Rate, Pitch Angle and RTN/HGC/HCI data)
+    
+    Input variables:
+    1. cdf_name = the name given to the cdf when  opened in a notebook
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    2. variable:  the variable you wish to average, for exemple 'C_H_Flux'
+    you can check all the variables in the cdf using the get_zvariables function.
+    
+    3. wanted_resolution: input the wanted resolution in seconds as an integer  e.g 300, 3600 etc. 
+    
+    4. data_resolution: input the resolution of the used data in seconds as an integer.
+    For EPI-Hi could be 10s, 60s, 300s, 3600s or one second.
+    
+    5. particle:  If you are NOT averaging Flux or Count Rate data, no input needed. 
+    Otherwise input the particle as a string:
+    For EPI-Hi data:
+    let1 and let2 : 'H', 'He' or 'electrons'
+    het: 'H', 'He' or 'electrons'
+    
+    '''
+ 
+ 
+ 
+ 
+def average_data_dataframe(dataframe, wanted_resolution, data_resolution):
+    '''
+    This function creates an averaged dataframe from a ready made dataframe.
+    This function works for all kinds of dataframe, but the first column shouold be epoch.
+    
+    Input variables:
+    1. dataframe = the name of the dataframe you wish to average
+     
+    2. wanted_resolution: input the wanted resolution in seconds as an integer e.g 300, 3600 etc.
+    
+    3. data_resolution: input the resolution of the used data as an integer in seconds.
+    For EPI-Hi could be 10s, 60s, 300s, 3600s or one second.
+    For EPI-Lo you can use the check_resolution function to find out the resolution of the data.
+    
+    '''
+ 
+ 
+ 
+def average_list(lista, wanted_resolution, data_resolution):
+    '''
+    This function is primarily meant for averaging an epoch list used in other functions in the software.
+    
+    Input variables:
+    1. lista = the name of the list you wish to average
+     
+    2. wanted_resolution: input the wanted resolution in seconds e.g 300, 3600 etc.as an integer
+    
+    3. data_resolution: input the resolution of the used data as an integer in seconds.
+    For EPI-Hi could be 10s, 60s, 300s, 3600s or one second.
+    For EPI-Lo you can use the check_resolution function to find out the resolution of the data.
+    
+    '''
+	
+	
+def join_dataframes(dataframe_one, dataframe_two):
+    '''
+    This function is primarily meant to be in other functions in the software. 
+    
+    This functions concatenates two dataframes.
+    
+    !!! The dataframe columns must be of the same length!!!
+    
+    This function can be used to create an averaged dataframe for the pa_flux and multipanel functions.
+    
+    Input variables:
+    
+    1. dataframe_one: name of the first dataframe.  e.g dataframe containing the pitch angle
+    !!! dataframe_one must constain an epoch column!!!
+    
+    2. dataframe_two: name of the second dataframe e.g. dataframe containing the fluxes 
+    corresponding to the pitch angle of the first dataframe
+    
+    '''
+
+def pa_dataframe(cdf_name, particle, direction= ''):
+    '''
+    This function creates a dataframe that includes the cdf file's epoch, pitch angle and flux for a chosen direction 
+    and particle. This dataframe can be used in the pa_fluxes function and is also used in the multipanel function.
+    
+    Input variables:
+    1. cdf_name: the name given to the cdf when opened in a notebook.
+    e.g. cdf_name = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    2. particle: the particle of which you want the fluxes of in the dataframe.
+    For HET: 'H', 'He' or 'Electrons'
+    For LET: 'H' or 'He' (as LET does not have flux data for electrons)
+    
+    
+    3. direction: LET and HET have different viewing directons. 
+    HET: 'A' or 'B'
+    LET1: 'A' or 'B'
+    LET2: 'C' (no input necessary)
+    
+    direction A is the main look direction for both LET and HET
+
+    
+    '''
+
+
+
+    
+def plot(cdf_name, variable, title = '', ylabel = ''):
+    '''
+    This function plots the data for any chosen variable from the cdf.
+    
+    !!! The data will be plotted in the same panel !!! (in case of matrixlike format e.g. flux or count rate)
+    
+    Input variables:
+    1. cdf_name = the name given to the cdf when it's opened in the notebook
+    e.g. name_of_cdf = cdflib.CDF(r'path_to_folder')
+    The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    
+    2. variable: input the name of the variable you wish to plot from the cdf file 
+    (you can check the variable names by using the get_zvariables function ) 
+    
+    3. title: choose a title for the plot (input not necessary)
+    
+    4. ylabel: chose a label for the y-axis (input not necessary)
+   
+    '''
+    
+
+
+def plot_pa_flux(let1 = '', let2 = '', het = '', title = '' , e_bins = [] , wanted_resolution = '', data_resolution = ''):
+    '''
+    This function plots the pitch angles of either LET or HET and the fluxes corresponding to the chosen e-bins of each pitch angle.
+    The fluxes for each energy channel will be plotted in a different panel. The colors in which the fluxes are plotted 
+    correspond to the pitch angles.
+    
+    let1 files contain data for the A and B viewing directions of LET and let2 files contain data for the C 
+    viewing direction of LET. het has A and B viewing directions.
+    
+    let1 and let2 data should be plotted together to have all three let viewing directions (A, B and C).
+     
+    After using the retrieve_data function to retrieve the data for let1, let2 and/or het for a certain date and resolution,
+    like so:
+    
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'let1',  rate = 'rates10')
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'let2',  rate = 'rates10')
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'het',  rate = 'rates10')
+    
+    *check the documentation of the retrieve_data function to see how to choose the inputs
+    
+    You should open the files like so:
+    
+    let1 = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-let1-rates10_20190404_v07.cdf')
+    let2 = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-let2-rates10_20190404_v07.cdf')
+    het = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-het-rates10_20190404_v07.cdf')
+    
+        
+    Input variables:
+    
+    !!! Either input both let1 and let2 or just het !!!
+    
+    1. let1:  the name given to the let1 cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line.
+    
+    2. let2:the name given to the let2 cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line.
+    
+    3. het:the name given to the het cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line. 
+    
+    4. title: title of the plot as a string
+    
+    5. e_bins: a list of numbers corresponding to the energy bins you wish to plot.
+    To check which number corresponds which energy channel use the energy_channels function.
+    This variable should be a list even if you plot just one energy channel. e.g [3] or [0,4,7,10]
+    
+    6. wanted_resolution: If you DO NOT wish to average the data NO input is necessary. Otherwise:
+    input the wanted resolution in seconds as an integer  e.g 300, 3600 etc. 
+    
+    7. data_resolution:If you DO NOT wish to average the data NO input is necessary. Otherwise:
+    input the resolution of the used data in seconds as an integer.
+    For EPI-Hi could be 10s, 60s, 300s, 3600s or one second.
+    
+    '''
+
+def spec_plot_pa(let1 = '', let2 = '', het = '',  title='', colorbar=True, ylabel='Pitch\nAngle ('+r'$\mathregular{^\circ}$'+')', colbar_orientation='horizontal', even_limits=False, colorbar_label=True, colormap=cm.inferno):
+    '''
+    
+    This function creates a spectrogram of the flux for each pitch angle of either LET or HET.
+    
+    let1 files contain data for the A and B viewing directions of LET and let2 files contain data for the C 
+    viewing direction of LET. het has A and B viewing directions.
+    
+    let1 and let2 data should be plotted together to have all three let viewing directions (A, B and C). 
+    So if you are plotting let data you should have an input for both let1 and let2. 
+    The input variables are explained below.
+     
+    After using the retrieve_data function to retrieve the data for let1, let2 and/or het for a certain date and resolution,
+    e.g. like so:
+    
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'let1',  rate = 'rates10')
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'let2',  rate = 'rates10')
+    retrieve_data(r'C:\Users\Desktop\folder', '20190404', 'epihi', 'het',  rate = 'rates10')
+    
+    *check the documentation of the retrieve_data function to see how to choose the inputs
+    
+    You should open the files like so:
+    
+    let1 = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-let1-rates10_20190404_v07.cdf')
+    let2 = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-let2-rates10_20190404_v07.cdf')
+    het = cdflib.CDF(r'C:\Users\Desktop\folder\psp_isois-epihi_l2-het-rates10_20190404_v07.cdf')
+    
+        
+    Input variables:
+    
+    !!! Either input both let1 and let2 or just het !!!
+    
+    1. let1:  the name given to the let1 cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line.
+    
+    2. let2:the name given to the let2 cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line.
+    
+    3. het:the name given to the het cdf when opened in a notebook
+    e.g. See above. The path_to_folder is output when retrieving the data from the database using the retrieve_data function.
+    You can copy paste it to open the file in the notebook or cmd line. 
+    
+    4. title: title of the plot as a string (if colorbar_orientation = horizontal it will cover the title)
+    
+    5. colorbar: leave to True
+    
+    6. ylabel: should be a string. No need to change it. It's the flux unists by default.
+    
+    7. colbar_orientation: 'horizontal' or 'vertical' 
+    
+    8. even_limits leave to False
+    
+    9. colorbar_label: True if you want to label the colorbar or False 
+    
+    10. colormap: can be any of the matplotlib colormaps e.g. cm.inferno, cm.jet 
+        link: https://matplotlib.org/stable/tutorials/colors/colormaps.html
+    
+    
+    '''
+
+def spec_plot(fig, ax, epoch, energy_channels, intensity, ylabel = '', title='', colorbar=True, colbar_orientation='vertical', even_limits=False, colorbar_label=True, colormap=cm.inferno):
+    '''
+    
+    This function creates a spectrogram of the flux or rate for each energy channel. 
+    This function is primarily used in the multipanel plot function, but can be called from another plotting function.
+    
+    Input variables:
+    
+    0: fig, ax are the way the figure and the axes are defined in the multiplot funtion.
+    
+    1: epoch: the datetime list. The epoch of the cfd in encoded in J2000. 
+    You can use the following code to convert it to a readable form:
+    e.g.
+    #LET 1
+    time1 = let1_april04.varget("Epoch")
+    t1 = []
+
+    #changing Epoch to readable UTC u.ns where ns = nanoseconds
+    for i in time1:
+        date_time_str = (Time(2000, format='jyear') + TimeDelta(i*u.ns)).iso
+        t1.append(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f'))
+        
+        
+    2. energy_channels: the list of the energy channels for the chosen flux or rate
+    
+    3. intensity: rate count of the particle (can be also the flux)
+    
+    4. ylabel: should be a string. No need to change it. It's the counts/s by default. Can be changed if using flux data. 
+    
+    5. title: title of the plot as a string (if colorbar_orientation = horizontal it will cover the title)
+    
+    6. colorbar: leave to True
+    
+    7. colbar_orientation: 'horizontal' or 'vertical' 
+    
+    8. even_limits leave to False
+    
+    9. colorbar_label: True if you want to label the colorbar or False 
+    
+    10. colormap: can be any of the matplotlib colormaps e.g. cm.inferno, cm.jet 
+        link: https://matplotlib.org/stable/tutorials/colors/colormaps.html
+    
+    
+    '''
+
+def multipanel_v001( path_to_folder, date, days, data_resolution = 'auto', plot_resolution = 'original'):
+
+    '''
+    
+    This function creates a multipanel plot that includes:
+    1. Proton flux direction A (LET)
+    2. Proton flux direction A (HET)
+    3. Count rate of protons for LET as a spectrogram
+    4. Count rate of protons for HET as a spectrogram
+    5. Count rate of electrons for LET as a spectrogram
+    6. Count rate of electrons for HET as a spectrogram
+    7. Electron count rate direction A LET
+    8. Electron count rate direction A HET
+    9. Proton Flux 1.2-1.4 MeV directions A,B,C (LET)
+    10. Pitch Angle LET directions A,B,C
+    11. Proton Flux 11.3-13.5 MeV directions A and B (HET)
+    12. Pitch Angle directions A and B (HET)
+    
+    
+    Input variables:
+    
+    1. path_to_folder: Choose a folder in your computer where you want to save the data.
+    The data will be automatically saved in the chosen folder as a cdf file. 
+    The files will be named with the exact name they have in the database.
+    Path exemple: 'C:/Users/Desktop/folder'
+    Use r before the quotation marks if using the back slash in the path name. 
+    This cancels out any special python characters.
+    Or use  / as in the example instead.
+    
+    2. date: Input the date you wish to plot as a string in the form: 'YYYYMMDD'
+    
+    3. days: Number of consecutive days you wish to plot
+    
+    4. data_resolution:  No input is necessary.
+    For EPI-Hi there are three possible choices of resolution: 10 seconds, 60 seconds and 3600 seconds.
+    The input should be one of the following strings: 'rates10', 'rates60' or 'rates3600'
+    
+    'rates10': If the 10s resolution is not available, the function will automatically download 60s resolution files. 
+    If this is not available either, 3600s data will be downloaded.
+    'rates60': If the 60s resolution is not available, the function will automatically download 10s resolution files. 
+    If this is not available either, 3600s data will be downloaded.
+    'rates3600': If the 3600s resolution is not available, the function will automatically download 60s resolution files. 
+    If this is not available either, 10s data will be downloaded.
+
+    If there is no inpu,t depending on the number of consecutive days you choose to plot,
+    the function will automatically choose the most appropriate resolution. 
+    For 1-3 days it will be 60 seconds. If however the 60 second data is not available, 
+    the function will download 10 second data and if this is not available it will download 3600 second data.
+    For 4+ days it will be 3600 seconds. If however the 3600 second data is not available, 
+    the function will download 60 second data and if this is not available it will download 10 second data.
+    
+    
+    
+    5. plot_resolution: no input is necessary. You can also choose to average the data of the plot.
+     For example: 'S', '30S', 'min', '10min', 'H', '3H','d', '3d', 'W' 
+     keywords: 
+     seconds: 'S'
+     minutes: 'min'
+     hours: 'H'
+     days: 'd'
+     weeks: 'W'
+
+    '''
+
+
+def loop_plot(path_to_folder, start_date, end_date, frequency):
+    
+    '''
+    This function plots and saves in loop of n days the plots between the start and end date (+n days, if the data is available). 
+    The function uses directly the multipanel function's default inputs for data resolution.
+    
+    Input parameters:
+    
+    1. path_to_folder: Choose a folder in your computer where you want to save the data.
+    The data will be automatically saved in the chosen folder as a cdf file. 
+    The files will be named with the exact name they have in the database.
+    Path exemple: 'C:/Users/Desktop/folder'
+    Use r before the quotation marks if using the back slash in the path name. 
+    This cancels out any special python characters.
+    Or use  / as in the example instead.
+    
+    2. start_date: date from which to plot in the form 'YYYYMMDD'
+    
+    3. end_date: date untill which to plot in the form 'YYYYMMDD'
+    
+    4. frequency: number of days each plot should contain. The input should be an integer.
+    
+    
+    '''
