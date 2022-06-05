@@ -1267,19 +1267,21 @@ def spec_plot_pa(let1 = '', let2 = '', het = '',  title='', colorbar=True, ylabe
     if colbar_orientation == 'horizontal':
         if colorbar_label:
             plt.subplots_adjust(top=0.8)
-        cax = fig.add_axes([bbox.xmin, bbox.ymax*1.04, bbox.width, bbox.height*0.067]) #0.12
-        cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
-        if colorbar_label:
-            cax.set_xlabel('Intensity '+r'($\mathregular{( cm^{2} s\/sr\/MeV )^{-1}}$)', size = 20)
-             #cax.set_title(title, fontsize=self.fontsi)
+        if colorbar:
+            cax = fig.add_axes([bbox.xmin, bbox.ymax*1.04, bbox.width, bbox.height*0.067]) #0.12
+            cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
+            if colorbar_label:
+                cax.set_xlabel('Intensity '+r'($\mathregular{( cm^{2} s\/sr\/MeV )^{-1}}$)', size = 20)
+                #cax.set_title(title, fontsize=self.fontsi)
     if colbar_orientation == 'vertical':
         if colorbar_label:
             plt.subplots_adjust(right=0.9)
-        cax = fig.add_axes([bbox.xmax*1.022, bbox.ymin, bbox.height*0.05, bbox.height])
-        cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
+        if colorbar:
+            cax = fig.add_axes([bbox.xmax*1.022, bbox.ymin, bbox.height*0.05, bbox.height])
+            cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
 
-        if colorbar_label:
-            cax.set_ylabel('Intensity '+r'($\mathregular{( cm^{2} s\/sr\/MeV )^{-1}}$)', size = 20)
+            if colorbar_label:
+                cax.set_ylabel('Intensity '+r'($\mathregular{( cm^{2} s\/sr\/MeV )^{-1}}$)', size = 20)
 
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y \n %H:%M:%S'))
 
@@ -1365,19 +1367,21 @@ def spec_plot(fig, ax, epoch, energy_channels, intensity, ylabel = '', title='',
     if colbar_orientation == 'horizontal':
         if colorbar_label:
             plt.subplots_adjust(top=0.8)
-        cax = fig.add_axes([bbox.xmin, bbox.ymax*1.04, bbox.width, bbox.height*0.067]) #0.12
-        cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
-        if colorbar_label:
-            cax.set_xlabel(r'$\mathregular{counts/s}$', size = 30)
-             #cax.set_title(title, fontsize=self.fontsi)
+        if colorbar:
+            cax = fig.add_axes([bbox.xmin, bbox.ymax*1.04, bbox.width, bbox.height*0.067]) #0.12
+            cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
+            if colorbar_label:
+                cax.set_xlabel(r'$\mathregular{counts/s}$', size = 30)
+                #cax.set_title(title, fontsize=self.fontsi)
     if colbar_orientation == 'vertical':
         if colorbar_label:
             plt.subplots_adjust(right=0.9)
-        cax = fig.add_axes([bbox.xmax*1.022, bbox.ymin, bbox.height*0.05, bbox.height])
-        cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
+        if colorbar:
+            cax = fig.add_axes([bbox.xmax*1.022, bbox.ymin, bbox.height*0.05, bbox.height])
+            cbar = fig.colorbar(quadmesh, cax=cax, orientation=colbar_orientation)
 
-        if colorbar_label:
-            cax.set_ylabel(r'$\mathregular{counts /s}$', size = 30)
+            if colorbar_label:
+                cax.set_ylabel(r'$\mathregular{counts /s}$', size = 30)
             
             
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y \n %H:%M:%S'))
