@@ -2370,7 +2370,3 @@ def loop_plot(path_to_folder, start_date, end_date, frequency):
           
     for date in days:
         multipanel_v001( path_to_folder, date, frequency )
-
-path = '/home/gieseler/uni/psp/data'
-f = retrieve_data(path, '20190404', 'epihi')
-print(stop)
