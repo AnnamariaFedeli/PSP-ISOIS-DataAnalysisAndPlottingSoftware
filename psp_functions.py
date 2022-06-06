@@ -75,7 +75,10 @@ def retrieve_data(path_to_folder, date, instrument, data = '', rate = ''):
 
     '''
     
-    urll = "http://spp-isois.sr.unh.edu/data_public/"+instrument[0:len(instrument)-1].upper()+instrument[len(instrument)-1]+"/level2/"
+    if instrument == 'isois':
+        urll = "http://spp-isois.sr.unh.edu/data_public/"+instrument.upper()+"/level2/"
+    else:
+        urll = "http://spp-isois.sr.unh.edu/data_public/"+instrument[0:len(instrument)-1].upper()+instrument[len(instrument)-1]+"/level2/"
     page = requests.get(urll)    
     dat = page.text
     a = dat.find('.cdf')
@@ -2367,3 +2370,7 @@ def loop_plot(path_to_folder, start_date, end_date, frequency):
           
     for date in days:
         multipanel_v001( path_to_folder, date, frequency )
+
+path = '/home/gieseler/uni/psp/data'
+f = retrieve_data(path, '20190404', 'epihi')
+print(stop)
