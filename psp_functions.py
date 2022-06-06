@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import pyspedas as psd
+# import pyspedas as psd
 import matplotlib.dates as mdates
 from datetime import datetime, date
 import cdflib
@@ -12,16 +12,15 @@ import plotly.graph_objects as go
 import math
 import urllib.request
 import warnings
-from contextlib import suppress
+# from contextlib import suppress
 from matplotlib import cm
-from matplotlib.ticker import MultipleLocator, LogLocator 
+# from matplotlib.ticker import MultipleLocator, LogLocator
 from dateutil.parser import parse
 import requests
 import statistics
 import os
 from matplotlib import colors
-from matplotlib.ticker import PercentFormatter
-  
+# from matplotlib.ticker import PercentFormatter
 
 #set plots' axes' tick label sizes globally
 plt.rc('xtick', labelsize = 30)
@@ -89,55 +88,55 @@ def retrieve_data(path_to_folder, date, instrument, data = '', rate = ''):
         if instrument == 'isois':
             #ISOIS
             url = 'http://spp-isois.sr.unh.edu/data_public/ISOIS/level2/psp_isois_l2-summary_'+date+'_'+version+'.cdf'
-            name = r"\name"+url[url.rfind('/')+1: len(url)]
-            name = name[0]+name[5:len(name)]
-            # checking if file already exists  
-            if os.path.exists(path_to_folder+name):
+            name = url[url.rfind('/')+1:len(url)]
+            fullpath = path_to_folder+os.sep+name
+            # checking if file already exists
+            if os.path.exists(fullpath):
                 print('File already present')
-                print('Path to file: '+ path_to_folder+name)
+                print('Path to file: '+fullpath)
             else:
-                urllib.request.urlretrieve(url, path_to_folder+name)
-                print('File saved succesfuly as '+ name[1:len(name)])
-                print('Path to file: '+ path_to_folder+name)
+                urllib.request.urlretrieve(url, fullpath)
+                print('File saved succesfuly as '+name)
+                print('Path to file: '+fullpath)
         elif instrument == 'epilo':
             url = 'http://spp-isois.sr.unh.edu/data_public/'+instrument[0:len(instrument)-1].upper()+instrument[len(instrument)-1]+'/level2/psp_isois-'+instrument+'_l2-'+data+'_'+date+'_'+version+'.cdf'
-            name = r"\name"+url[url.rfind('/')+1: len(url)]
-            name = name[0]+name[5:len(name)]
-            if os.path.exists(path_to_folder+name):
+            name = url[url.rfind('/')+1:len(url)]
+            fullpath = path_to_folder+os.sep+name
+            if os.path.exists(fullpath):
                 print('File already present')
-                print('Path to file: '+ path_to_folder+name)
+                print('Path to file: '+fullpath)
             else:
-                urllib.request.urlretrieve(url, path_to_folder+name)
-                print('File saved succesfuly as '+ name[1:len(name)])
-                print('Path to file: '+ path_to_folder+name)
+                urllib.request.urlretrieve(url, fullpath)
+                print('File saved succesfuly as '+name)
+                print('Path to file: '+fullpath)
         elif instrument == 'epihi':
             if rate == 'rates':
                 url = 'http://spp-isois.sr.unh.edu/data_public/'+instrument[0:len(instrument)-1].upper()+instrument[len(instrument)-1]+'/level2/psp_isois-'+instrument+'_l2-second-'+rate+'_'+date+'_'+version+'.cdf'
-                name = r"\name"+url[url.rfind('/')+1: len(url)]
-                name = name[0]+name[5:len(name)]
-                if os.path.exists(path_to_folder+name):
+                name = url[url.rfind('/')+1:len(url)]
+                fullpath = path_to_folder+os.sep+name
+                if os.path.exists(fullpath):
                     print('File already present')
-                    print('Path to file: '+ path_to_folder+name)
+                    print('Path to file: '+fullpath)
                 else:
-                    urllib.request.urlretrieve(url, path_to_folder+name)
-                    print('File saved succesfuly as '+ name[1:len(name)])
-                    print('Path to file: '+ path_to_folder+name)
+                    urllib.request.urlretrieve(url, fullpath)
+                    print('File saved succesfuly as '+name)
+                    print('Path to file: '+fullpath)
         
             else:   
                 url = 'http://spp-isois.sr.unh.edu/data_public/'+instrument[0:len(instrument)-1].upper()+instrument[len(instrument)-1]+'/level2/psp_isois-'+instrument+'_l2-'+data+'-'+rate+'_'+date+'_'+version+'.cdf'
-                name = r"\name"+url[url.rfind('/')+1: len(url)]
-                name = name[0]+name[5:len(name)]
-                if os.path.exists(path_to_folder+name):
+                name = url[url.rfind('/')+1:len(url)]
+                fullpath = path_to_folder+os.sep+name
+                if os.path.exists(fullpath):
                     print('File already present')
-                    print('Path to file: '+ path_to_folder+name)
+                    print('Path to file: '+fullpath)
                 else:
-                    urllib.request.urlretrieve(url, path_to_folder+name)
-                    print('File saved succesfuly as '+ name[1:len(name)])
-                    print('Path to file: '+ path_to_folder+name)
+                    urllib.request.urlretrieve(url, fullpath)
+                    print('File saved succesfuly as '+name)
+                    print('Path to file: '+fullpath)
         
     except:
         print('The file for '+date+', '+instrument+', '+data+', '+rate+' is not available, check your input or choose another date!')
-    
+    return fullpath
 
 def get_zvariables(name_of_cdf):
     '''
